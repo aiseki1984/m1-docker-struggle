@@ -1,31 +1,31 @@
 version: "3.8"
 
 services:
-  db:
-    # image: my_python/mysql:1.0
-    build: ./.docker/mysql
-    # container_name: 'my_python_db'
-    # platform: linux/amd64
-    # platform: linux/x86_64
+  # db:
+  #   # image: my_python/mysql:1.0
+  #   build: ./.docker/mysql
+  #   # container_name: 'my_python_db'
+  #   # platform: linux/amd64
+  #   # platform: linux/x86_64
 
-    expose:
-      - "3306"
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=test
-      - MYSQL_USER=test
-      - MYSQL_PASSWORD=test
-      - TZ="Asia/Tokyo"
-    volumes:
-      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./.docker/mysql/database:/var/lib/mysql
-      - ./.docker/mysql/init:/docker-entrypoint-initdb.d
+  #   expose:
+  #     - "3306"
+  #   ports:
+  #     - 3306:3306
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=root
+  #     - MYSQL_DATABASE=test
+  #     - MYSQL_USER=test
+  #     - MYSQL_PASSWORD=test
+  #     - TZ="Asia/Tokyo"
+  #   volumes:
+  #     - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+  #     - ./.docker/mysql/database:/var/lib/mysql
+  #     - ./.docker/mysql/init:/docker-entrypoint-initdb.d
 
   # phpmyadmin:
-  #   container_name: phpmyadmin
-  #   image: phpmyadmin/phpmyadmin
+  #   # container_name: phpmyadmin
+  #   image: phpmyadmin:latest
   #   environment:
   #     - PMA_ARBITRARY=1
   #     - PMA_HOST=db
@@ -35,3 +35,25 @@ services:
   #     - db
   #   ports:
   #     - 8081:80
+
+  mailhog:
+    build: ./.docker/mymailhog
+    container_name: "my_mailhog"
+    # image: mailhog/mailhog:latest
+    # platform: linux/amd64
+    # platform: linux/x86_64
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+  # mail:
+  #   image: schickling/mailcatcher
+  #   ports:
+  #     - "1080:1080"
+  #     - "1025:1025"
+  php:
+    build: ./.docker/php
+    ports:
+      - "80:80"
+    volumes:
+      - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./www:/var/www/html
