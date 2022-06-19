@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  db:
+    # image: my_python/mysql:1.0
+    build: ./.docker/mysql
+    # container_name: 'my_python_db'
+    # platform: linux/amd64
+    # platform: linux/x86_64
+
+    expose:
+      - "3306"
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - TZ="Asia/Tokyo"
+    volumes:
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./.docker/mysql/database:/var/lib/mysql
+      - ./.docker/mysql/init:/docker-entrypoint-initdb.d
+
+  # phpmyadmin:
+  #   container_name: phpmyadmin
+  #   image: phpmyadmin/phpmyadmin
+  #   environment:
+  #     - PMA_ARBITRARY=1
+  #     - PMA_HOST=db
+  #     - PMA_USER=root
+  #     - PMA_PASSWORD=root
+  #   links:
+  #     - db
+  #   ports:
+  #     - 8081:80
